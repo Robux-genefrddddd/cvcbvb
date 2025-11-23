@@ -87,7 +87,7 @@ export interface AdminLicenseCreate {
 }
 
 export interface AdminUserAction {
-  userId: string;
+  email: string;
   action: "warn" | "suspend" | "ban" | "unban" | "reactivate";
   reason?: string;
   durationDays?: number;
