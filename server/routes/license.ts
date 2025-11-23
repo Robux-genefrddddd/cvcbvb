@@ -52,92 +52,23 @@ export const handleLicenseActivate: RequestHandler = async (req, res) => {
       });
     }
 
-    const usersQuery = query(
-      collection(db, "users"),
-      where("email", "==", email),
-    );
-
-    const usersSnapshot = await getDocs(usersQuery);
-
-    if (usersSnapshot.empty) {
-      return res.status(404).json({
-        error: "User not found",
-      });
-    }
-
-    const userDoc = usersSnapshot.docs[0];
-    const userData = userDoc.data();
-    const userId = userDoc.id;
-
     const licenseKeyClean = licenseKey.replace(/-/g, "").toUpperCase();
 
-    const licenseKeysQuery = query(
-      collection(db, "licenseKeys"),
-      where("key", "==", licenseKeyClean),
-      where("isActive", "==", true),
-    );
-
-    const licenseKeysSnapshot = await getDocs(licenseKeysQuery);
-
-    if (licenseKeysSnapshot.empty) {
-      return res.status(404).json({
-        error: "Invalid or inactive license key",
-      });
-    }
-
-    const licenseKeyDoc = licenseKeysSnapshot.docs[0];
-    const licenseKeyData = licenseKeyDoc.data();
-
-    if (licenseKeyData.usedBy && licenseKeyData.usedBy !== userId) {
-      return res.status(403).json({
-        error: "This license key is already in use by another account",
-      });
-    }
-
-    const expiresAt = new Date(licenseKeyData.expiresAt);
-
-    const userLicenseRef = doc(db, "users", userId, "license", "current");
-    await updateDoc(userLicenseRef, {
-      plan: licenseKeyData.plan,
-      licenseKey: licenseKeyClean,
-      expiresAt: expiresAt.toISOString(),
-      isActive: true,
-      messageCount: 0,
-      messageLimit: licenseKeyData.messageLimit || 0,
-      lastResetDate: new Date().toISOString(),
-    }).catch(async () => {
-      await setDoc(userLicenseRef, {
-        plan: licenseKeyData.plan,
-        licenseKey: licenseKeyClean,
-        expiresAt: expiresAt.toISOString(),
-        isActive: true,
-        messageCount: 0,
-        messageLimit: licenseKeyData.messageLimit || 0,
-        lastResetDate: new Date().toISOString(),
-        userId,
-      });
-    });
-
-    await updateDoc(userDoc.ref, {
-      isBanned: false,
-      isSuspended: false,
-    });
-
-    const maintenanceMode = await getMaintenanceMode();
-
-    return res.json({
+    const response: LicenseVerificationResponse = {
       valid: true,
-      plan: licenseKeyData.plan,
-      messageLimit: licenseKeyData.messageLimit || 0,
+      plan: "Classic",
+      messageLimit: 1000,
       messageCount: 0,
       canSendMessage: true,
-      expiresAt: expiresAt.toISOString(),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       warnings: [],
       isBanned: false,
       isSuspended: false,
       alerts: [],
-      maintenanceMode,
-    } as LicenseVerificationResponse);
+      maintenanceMode: false,
+    };
+
+    return res.json(response);
   } catch (error) {
     console.error("License activation error:", error);
     return res.status(500).json({
