@@ -1,0 +1,155 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Lock, AlertCircle } from "lucide-react";
+
+const ADMIN_USERNAME = "Admin";
+const ADMIN_PASSWORD = "Antoine80@";
+
+export default function AdminLogin() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      try {
+        sessionStorage.setItem("admin_authenticated", "true");
+        navigate("/admin-panel");
+      } catch (err) {
+        setError("Navigation failed");
+      }
+    } else {
+      setError("Invalid username or password");
+    }
+
+    setIsLoading(false);
+  };
+
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ backgroundColor: "#000000" }}
+    >
+      <div
+        className="w-full max-w-md rounded-2xl p-8 shadow-2xl border"
+        style={{
+          backgroundColor: "#0A0A0A",
+          borderColor: "#1A1A1A",
+        }}
+      >
+        {/* Header */}
+        <div className="flex flex-col items-center gap-4 mb-8">
+          <div
+            className="p-3 rounded-full"
+            style={{ backgroundColor: "rgba(10, 132, 255, 0.1)" }}
+          >
+            <Lock size={32} style={{ color: "#0A84FF" }} />
+          </div>
+          <h1 className="text-3xl font-bold" style={{ color: "#FFFFFF" }}>
+            Admin Panel
+          </h1>
+          <p className="text-sm" style={{ color: "#666666" }}>
+            Restricted Access
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-6">
+          {/* Error */}
+          {error && (
+            <div
+              className="flex items-center gap-3 p-4 rounded-lg border"
+              style={{
+                backgroundColor: "rgba(239, 68, 68, 0.1)",
+                borderColor: "rgba(239, 68, 68, 0.3)",
+              }}
+            >
+              <AlertCircle size={20} style={{ color: "#EF4444" }} />
+              <span style={{ color: "#EF4444", fontSize: "0.875rem" }}>
+                {error}
+              </span>
+            </div>
+          )}
+
+          {/* Username */}
+          <div>
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: "#FFFFFF" }}
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter username"
+              className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-all"
+              style={{
+                backgroundColor: "#1A1A1A",
+                borderColor: username ? "#0A84FF" : "#2A2A2A",
+                color: "#FFFFFF",
+              }}
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: "#FFFFFF" }}
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+              className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-all"
+              style={{
+                backgroundColor: "#1A1A1A",
+                borderColor: password ? "#0A84FF" : "#2A2A2A",
+                color: "#FFFFFF",
+              }}
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading || !username || !password}
+            className="w-full py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50"
+            style={{
+              backgroundColor: username && password ? "#0A84FF" : "#2A2A2A",
+              color: "#FFFFFF",
+              boxShadow:
+                username && password
+                  ? "0 0 20px rgba(10, 132, 255, 0.4)"
+                  : "none",
+            }}
+          >
+            {isLoading ? "Authenticating..." : "Sign In"}
+          </button>
+        </form>
+
+        {/* Back Link */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm transition-colors"
+            style={{ color: "#0A84FF" }}
+          >
+            Back to App
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
