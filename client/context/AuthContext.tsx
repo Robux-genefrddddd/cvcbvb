@@ -415,6 +415,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         canSendMessage,
         verifyLicense,
         activateLicense,
+        updateAvatar,
         warnings,
         alerts,
         maintenanceMode,
