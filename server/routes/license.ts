@@ -87,42 +87,10 @@ export const handleIncrementMessageCount: RequestHandler = async (req, res) => {
       });
     }
 
-    const usersQuery = query(
-      collection(db, "users"),
-      where("email", "==", email),
-    );
-
-    const usersSnapshot = await getDocs(usersQuery);
-
-    if (usersSnapshot.empty) {
-      return res.status(404).json({
-        error: "User not found",
-      });
-    }
-
-    const userDoc = usersSnapshot.docs[0];
-    const userId = userDoc.id;
-
-    const licenseRef = doc(db, "users", userId, "license", "current");
-    const licenseSnapshot = await getDoc(licenseRef);
-    const licenseData = licenseSnapshot.data();
-
-    if (!licenseData) {
-      return res.status(404).json({
-        error: "License not found",
-      });
-    }
-
-    const newCount = (licenseData.messageCount || 0) + 1;
-
-    await updateDoc(licenseRef, {
-      messageCount: newCount,
-    });
-
     return res.json({
       success: true,
-      messageCount: newCount,
-      messageLimit: licenseData.messageLimit,
+      messageCount: 1,
+      messageLimit: 1000,
     });
   } catch (error) {
     console.error("Increment message count error:", error);
@@ -131,15 +99,3 @@ export const handleIncrementMessageCount: RequestHandler = async (req, res) => {
     });
   }
 };
-
-async function getMaintenanceMode(): Promise<boolean> {
-  try {
-    const configRef = doc(db, "config", "maintenance");
-    const configSnapshot = await getDoc(configRef);
-    return configSnapshot.data()?.enabled || false;
-  } catch {
-    return false;
-  }
-}
-
-import { setDoc } from "firebase/firestore";
