@@ -1,4 +1,4 @@
-export interface TurnstileVerifyResponse {
+export interface HcaptchaVerifyResponse {
   success: boolean;
   challenge_ts?: string;
   hostname?: string;
@@ -7,7 +7,7 @@ export interface TurnstileVerifyResponse {
 
 export const verifyCaptchaToken = async (
   token: string,
-): Promise<TurnstileVerifyResponse> => {
+): Promise<HcaptchaVerifyResponse> => {
   try {
     const response = await fetch("/api/captcha/verify", {
       method: "POST",
@@ -37,5 +37,5 @@ export const verifyCaptchaToken = async (
 };
 
 export const getSiteKey = (): string => {
-  return import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || "";
+  return import.meta.env.VITE_HCAPTCHA_SITE_KEY || "";
 };
