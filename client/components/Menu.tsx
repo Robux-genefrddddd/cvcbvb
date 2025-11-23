@@ -341,10 +341,14 @@ export default function Menu({ isDark, onThemeToggle }: MenuProps) {
 
           {/* Déconnexion */}
           <button
-            onClick={() => {
-              logout();
-              navigate("/register");
-              handleMenuItemClick();
+            onClick={async () => {
+              try {
+                await logout();
+                navigate("/register");
+                handleMenuItemClick();
+              } catch (err) {
+                console.error("Logout failed:", err);
+              }
             }}
             className="w-full flex items-center gap-3 px-4 py-2 text-left transition-all duration-200 rounded-lg font-medium text-sm"
             style={{
