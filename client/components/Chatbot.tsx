@@ -31,8 +31,8 @@ export default function Chatbot() {
     ];
   });
 
-  const [activeConversationId, setActiveConversationId] = useState<string>(() =>
-    conversations[0]?.id || Date.now().toString(),
+  const [activeConversationId, setActiveConversationId] = useState<string>(
+    () => conversations[0]?.id || Date.now().toString(),
   );
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +102,8 @@ export default function Chatbot() {
       const messagesForAPI = activeConversation.messages
         .concat(userMessage)
         .map((msg) => ({
-          role: msg.sender === "user" ? ("user" as const) : ("assistant" as const),
+          role:
+            msg.sender === "user" ? ("user" as const) : ("assistant" as const),
           content: msg.content,
         }));
 

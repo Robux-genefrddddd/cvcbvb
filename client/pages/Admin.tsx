@@ -114,10 +114,7 @@ export default function Admin() {
               <p className="text-3xl font-bold" style={{ color: "#0A84FF" }}>
                 --
               </p>
-              <p
-                className="text-sm mt-2"
-                style={{ color: "#888888" }}
-              >
+              <p className="text-sm mt-2" style={{ color: "#888888" }}>
                 Connected to Firebase
               </p>
             </div>
@@ -142,10 +139,7 @@ export default function Admin() {
               <p className="text-3xl font-bold" style={{ color: "#0A84FF" }}>
                 --
               </p>
-              <p
-                className="text-sm mt-2"
-                style={{ color: "#888888" }}
-              >
+              <p className="text-sm mt-2" style={{ color: "#888888" }}>
                 Real-time usage
               </p>
             </div>
