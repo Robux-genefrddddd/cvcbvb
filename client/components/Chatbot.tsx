@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Plus, User, Zap } from "lucide-react";
+import { Send, Plus, User, Zap, Settings as SettingsIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
 import Sidebar from "./Sidebar";
 import InputArea from "./InputArea";
