@@ -210,7 +210,7 @@ export default function Chatbot() {
             <button
               onClick={handleSendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-3 sm:px-4 py-3 bg-black hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 self-end flex-shrink-0"
+              className="btn-glow px-3 sm:px-4 py-3 flex items-center justify-center gap-2 self-end flex-shrink-0"
               title="Send message"
             >
               <Send size={18} />
