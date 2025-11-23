@@ -128,30 +128,15 @@ export default function Sidebar({
       {/* Bottom Section - Plan Card */}
       <div className="px-4 py-4 border-t border-gray-900">
         <div
-          className="relative rounded-xl overflow-hidden p-4 border border-gray-800 shadow-xl"
+          className="relative rounded-lg overflow-hidden p-3 border border-gray-800"
           style={{
-            background: "linear-gradient(135deg, #1A1A1A 0%, #151515 100%)",
-            boxShadow: "0 0 20px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+            backgroundColor: "#111111",
+            boxShadow: "0 0 12px rgba(255, 255, 255, 0.03)",
           }}
         >
-          {/* Subtle Glow Background */}
-          <div className="absolute inset-0 opacity-50" />
-
-          {/* Content */}
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <Zap size={18} className="text-yellow-500" />
-              <span className="text-sm font-semibold text-white">Plan: Gratuit</span>
-            </div>
-
-            <p className="text-xs text-gray-400 mb-4">
-              Profitez de plus de fonctionnalités avec un plan supérieur.
-            </p>
-
-            <button className="w-full flex items-center justify-center gap-2 px-3 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors duration-200 shadow-lg shadow-blue-500/30">
-              Mettre à jour
-              <ChevronRight size={16} />
-            </button>
+          {/* Content - Centered */}
+          <div className="text-center">
+            <span className="text-xs font-semibold text-gray-300">Plan: Gratuit</span>
           </div>
         </div>
 
