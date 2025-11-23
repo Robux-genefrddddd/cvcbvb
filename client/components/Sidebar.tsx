@@ -44,7 +44,7 @@ export default function Sidebar({
   };
 
   return (
-    <div className="hidden lg:flex w-80 h-screen flex-col bg-black border-r border-gray-900 shadow-2xl">
+    <div className="hidden lg:flex w-[280px] h-screen flex-col bg-black border-r border-gray-900 shadow-2xl">
       {/* Header Section - User Profile */}
       <div className="px-6 py-6 border-b border-gray-900">
         <div className="flex items-center gap-4">
