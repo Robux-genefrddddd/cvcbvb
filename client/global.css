@@ -122,11 +122,28 @@
 @layer components {
   /* Glassmorphism Button */
   .btn-glass {
-    @apply backdrop-blur-md bg-white/10 dark:bg-white/8 border border-white/20 dark:border-white/15 text-black dark:text-white rounded-lg transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/15 hover:border-white/40 dark:hover:border-white/30 shadow-lg;
+    @apply backdrop-blur-md rounded-lg transition-all duration-300 text-black dark:text-white shadow-lg;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .dark .btn-glass {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   .btn-glass:active {
-    @apply bg-white/15 dark:bg-white/12 transform scale-95;
+    transform: scale(0.95);
   }
 
   .btn-glass:disabled {
@@ -140,12 +157,12 @@
   }
 
   .btn-glow:hover {
-    @apply transform -translate-y-0.5;
+    transform: translateY(-2px);
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 25px rgba(0, 0, 0, 0.2);
   }
 
   .btn-glow:active {
-    @apply transform scale-95;
+    transform: scale(0.95);
   }
 
   .btn-glow:disabled {
@@ -154,15 +171,45 @@
 
   /* Icon Button with Glass */
   .btn-icon-glass {
-    @apply p-2 backdrop-blur-md bg-white/10 dark:bg-white/8 border border-white/20 dark:border-white/15 rounded-lg transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/15;
+    @apply p-2 backdrop-blur-md rounded-lg transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-icon-glass:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-icon-glass {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-icon-glass:hover {
+    background-color: rgba(255, 255, 255, 0.12);
   }
 
   .btn-icon-glass:active {
-    @apply transform scale-90;
+    transform: scale(0.9);
   }
 
   /* Glass Input Style */
   .input-glass {
-    @apply backdrop-blur-sm bg-white/30 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-black dark:text-white placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 dark:focus:ring-white/20 focus:border-transparent transition-all duration-300;
+    @apply backdrop-blur-sm rounded-lg text-black dark:text-white placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .input-glass:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+  }
+
+  .dark .input-glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dark .input-glass:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
   }
 }
