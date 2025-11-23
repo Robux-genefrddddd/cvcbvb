@@ -54,21 +54,61 @@ export default function Login() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 py-8"
-      style={{
-        backgroundColor: "#0A0A0A",
-      }}
+      className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden"
+      style={{ backgroundColor: "#000000" }}
     >
-      <div className="w-full max-w-md">
+      {/* Starfield Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(100)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 3 + 1 + "px",
+              height: Math.random() * 3 + 1 + "px",
+              left: Math.random() * 100 + "%",
+              top: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.7 + 0.3,
+              animation: `shootingStar ${Math.random() * 3 + 2}s infinite`,
+              animationDelay: Math.random() * 5 + "s",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
         {/* Card Container */}
         <div
-          className="rounded-2xl p-8 border"
+          className="rounded-2xl p-8 border overflow-hidden relative"
           style={{
-            background: "linear-gradient(180deg, #F8FBFF 0%, #E6F0FF 100%)",
-            borderColor: "rgba(255, 255, 255, 0.2)",
-            boxShadow: "0 10px 40px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#0A0A0A",
+            borderColor: "#1A1A1A",
+            boxShadow: "0 0 40px rgba(255, 255, 255, 0.03)",
+            animation:
+              "slideUp 0.6s ease-out cubic-bezier(0.34, 1.56, 0.64, 1)",
           }}
         >
+          {/* Blue Wave Background Animation */}
+          <div
+            className="absolute inset-0 rounded-2xl"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(10, 132, 255, 0.15) 0%, rgba(10, 132, 255, 0.05) 50%, transparent 100%)",
+              animation: "blueWave 4s ease-in-out infinite",
+              pointerEvents: "none",
+            }}
+          />
+
+          {/* Animated border glow */}
+          <div
+            className="absolute inset-0 rounded-2xl opacity-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(10, 132, 255, 0.3), transparent)",
+              animation: "borderGlow 3s ease-in-out infinite",
+              pointerEvents: "none",
+            }}
+          />
 
           <div>
             {/* Header */}
