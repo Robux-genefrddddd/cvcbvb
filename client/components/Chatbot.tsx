@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Plus, User } from "lucide-react";
+import { Send, Plus, User, Zap } from "lucide-react";
 import Menu from "./Menu";
 import Sidebar from "./Sidebar";
 import InputArea from "./InputArea";
 import CodeBlock from "./CodeBlock";
+import LicenseDialog from "./LicenseDialog";
 import { parseCodeBlocks } from "@/lib/codeDisplay";
 import { useAuth } from "@/hooks/useAuth";
 
