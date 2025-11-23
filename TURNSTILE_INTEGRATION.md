@@ -3,6 +3,7 @@
 ## Overview
 
 Cloudflare Turnstile is integrated into the login and registration pages to prevent:
+
 - ✅ Bot attacks
 - ✅ Credential stuffing
 - ✅ Automated account creation abuse
@@ -14,11 +15,13 @@ Cloudflare Turnstile is integrated into the login and registration pages to prev
 ### Environment Variables
 
 **Public** (in `.env`):
+
 ```env
 VITE_CLOUDFLARE_TURNSTILE_SITE_KEY=0x4AAAAAACCgGZMtn1bLMwIz
 ```
 
 **Secret** (set via DevServerControl, stored securely):
+
 ```
 CLOUDFLARE_TURNSTILE_SECRET_KEY=0x4AAAAAACCgGU_i04jylHHwZq4DDvyHsj0
 ```
@@ -47,6 +50,7 @@ Turnstile → onVerify(token) → setCaptchaToken(token)
 **Endpoint**: `POST /api/captcha/verify`
 
 **Request**:
+
 ```json
 {
   "token": "0.CxYYRjX6k3u8C..."
@@ -54,6 +58,7 @@ Turnstile → onVerify(token) → setCaptchaToken(token)
 ```
 
 **Response** (Success):
+
 ```json
 {
   "success": true,
@@ -63,6 +68,7 @@ Turnstile → onVerify(token) → setCaptchaToken(token)
 ```
 
 **Response** (Failed):
+
 ```json
 {
   "success": false,
@@ -80,7 +86,7 @@ client/
     Register.tsx        ← Added Turnstile widget + verification
   lib/
     turnstile.ts        ← NEW: Captcha utilities & API calls
-    
+
 server/
   routes/
     captcha.ts          ← NEW: Server-side verification endpoint
@@ -92,11 +98,13 @@ server/
 ## Features
 
 ### Dark Theme
+
 - Turnstile widget displays in dark mode
 - Matches app's dark UI aesthetic
 - Language set to French (`language="fr"`)
 
 ### User Experience
+
 1. **Before form submit**: User must complete captcha
 2. **On submit**: Captcha is verified server-side
 3. **On success**: User proceeds to Firebase authentication
@@ -104,6 +112,7 @@ server/
 5. **On expiry**: Captcha expires after ~30min, user must re-verify
 
 ### Security Features
+
 - ✅ Server-side verification (prevents token forgery)
 - ✅ Challenge timestamp tracking
 - ✅ Hostname validation
@@ -113,6 +122,7 @@ server/
 ## Testing
 
 ### Test Successful CAPTCHA
+
 1. Go to `/login` or `/register`
 2. Fill in form
 3. Click Turnstile checkbox
@@ -121,13 +131,16 @@ server/
 6. Should proceed to next step (security check, then Firebase auth)
 
 ### Test Failed CAPTCHA
+
 1. Fill in form
 2. Let captcha expire (~30min)
 3. Try to submit
 4. Should show: "Please complete the captcha verification"
 
 ### Test Invalid Token
+
 Manually tamper with token in network request:
+
 1. Open DevTools Network tab
 2. Submit form
 3. Intercept POST to `/api/captcha/verify`
@@ -135,13 +148,16 @@ Manually tamper with token in network request:
 5. Should get: "Captcha verification failed"
 
 ### Debug Server Response
+
 ```javascript
 // In browser console before submitting:
-await fetch('/api/captcha/verify', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ token: 'valid_token_here' })
-}).then(r => r.json()).then(console.log)
+await fetch("/api/captcha/verify", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ token: "valid_token_here" }),
+})
+  .then((r) => r.json())
+  .then(console.log);
 ```
 
 ## API Integration Flow
@@ -204,27 +220,30 @@ await fetch('/api/captcha/verify', {
 
 ### Common Error Codes
 
-| Error Code | Meaning | Solution |
-|-----------|---------|----------|
+| Error Code               | Meaning                  | Solution                   |
+| ------------------------ | ------------------------ | -------------------------- |
 | `invalid-input-response` | Token is invalid/expired | User must re-solve captcha |
-| `invalid-input-secret` | Secret key is wrong | Check environment variable |
-| `bad-request` | Malformed request | Check JSON format |
-| `timeout-or-duplicate` | Token was used twice | User must get new token |
-| `sitekey-disabled` | Site key disabled | Check Cloudflare dashboard |
+| `invalid-input-secret`   | Secret key is wrong      | Check environment variable |
+| `bad-request`            | Malformed request        | Check JSON format          |
+| `timeout-or-duplicate`   | Token was used twice     | User must get new token    |
+| `sitekey-disabled`       | Site key disabled        | Check Cloudflare dashboard |
 
 ### Error Messages (French)
 
 **User-facing**:
+
 - "Veuillez compléter la vérification du captcha" → Please complete captcha
 - "Vérification du captcha échouée" → Captcha verification failed
 
 **Server logs**:
+
 - "Cloudflare API error: {statusText}"
 - "Cloudflare Turnstile secret key not configured"
 
 ## Cloudflare Dashboard
 
 ### Monitor Captcha Analytics
+
 1. Go: https://dash.cloudflare.com/
 2. Navigate to: Turnstile → Sites
 3. Select your site
@@ -235,6 +254,7 @@ await fetch('/api/captcha/verify', {
    - User feedback
 
 ### Adjust Settings
+
 - **Challenge difficulty**: Easy, Medium, Hard
 - **Widget size**: Normal, Flexible, Compact
 - **Display language**: Auto-detect or French
@@ -250,20 +270,24 @@ await fetch('/api/captcha/verify', {
 ## Security Considerations
 
 ### What Turnstile Protects Against
+
 ✅ Automated bots  
 ✅ Credential stuffing  
 ✅ Brute force login attempts  
 ✅ Account creation spam  
-✅ 4G mobile network abuse  
+✅ 4G mobile network abuse
 
 ### What Turnstile Does NOT Protect Against
+
 ❌ Phishing attacks  
 ❌ Social engineering  
 ❌ Leaked credentials  
-❌ Weak passwords  
+❌ Weak passwords
 
 ### Additional Security Layers
+
 This app combines Turnstile with:
+
 1. **Fraud Prevention System** - VPN/device/location detection
 2. **Firebase Authentication** - Secure password handling
 3. **Device Fingerprinting** - Device tracking
@@ -272,23 +296,27 @@ This app combines Turnstile with:
 ## Troubleshooting
 
 ### Captcha Not Showing
+
 1. Check `VITE_CLOUDFLARE_TURNSTILE_SITE_KEY` is set
 2. Check browser console for errors
 3. Check Cloudflare site is active
 4. Clear browser cache
 
 ### "Secret key not configured" Error
+
 1. Set environment variable: `CLOUDFLARE_TURNSTILE_SECRET_KEY`
 2. Restart dev server with `DevServerControl`
 3. Check server logs for confirmation
 
 ### Token Verification Fails
+
 1. Check secret key is correct
 2. Check token wasn't used twice
 3. Check token didn't expire
 4. Check Cloudflare API is accessible
 
 ### Widget Shows Different Language
+
 - Language set to French via `language="fr"`
 - If auto-detect enabled, respects browser language
 - Override in `Turnstile` component: `language="fr"`
@@ -296,6 +324,7 @@ This app combines Turnstile with:
 ## Production Deployment
 
 ### Checklist
+
 - [ ] Move secret key to secure vault (not .env)
 - [ ] Update site key for production domain
 - [ ] Enable HTTPS (required for Turnstile)
@@ -305,6 +334,7 @@ This app combines Turnstile with:
 - [ ] Document for support team
 
 ### Environment Setup
+
 ```bash
 # Production
 export VITE_CLOUDFLARE_TURNSTILE_SITE_KEY="prod_site_key"
@@ -314,11 +344,13 @@ export CLOUDFLARE_TURNSTILE_SECRET_KEY="prod_secret_key"
 ## Support
 
 ### Cloudflare Turnstile
+
 - Docs: https://developers.cloudflare.com/turnstile/
 - API Reference: https://developers.cloudflare.com/turnstile/api/
 - Status: https://www.cloudflarestatus.com/
 
 ### React Integration
+
 - Library: https://github.com/marsidev/react-turnstile
 - Issues: Report on GitHub
 
@@ -330,7 +362,7 @@ Cloudflare Turnstile provides **invisible bot protection** on login/register pag
 ✅ 4G mobile network abuse  
 ✅ VPN bypass attempts  
 ✅ Device spoofing  
-✅ Location anomalies  
+✅ Location anomalies
 
 ---
 

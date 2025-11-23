@@ -19,9 +19,7 @@ export const getDeviceFingerprint = async (): Promise<DeviceFingerprint> => {
 
       cachedFingerprint = {
         fingerprint,
-        components: Object.fromEntries(
-          components.map((c) => [c.key, c.value])
-        ),
+        components: Object.fromEntries(components.map((c) => [c.key, c.value])),
       };
 
       resolve(cachedFingerprint);

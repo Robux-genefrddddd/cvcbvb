@@ -52,7 +52,8 @@ export const securityConfig = {
 
   errorMessages: {
     vpn: "Veuillez désactiver votre VPN pour utiliser la plateforme. Pour des raisons de sécurité, les VPN ne sont pas autorisés, même légitimes.",
-    threat: "Votre adresse IP a été identifiée comme suspecte. Veuillez réessayer plus tard.",
+    threat:
+      "Votre adresse IP a été identifiée comme suspecte. Veuillez réessayer plus tard.",
     locationChange:
       "Changement de localisation détecté. Votre compte a été verrouillé pendant 24 heures. Veuillez vérifier votre email.",
     newDevice:

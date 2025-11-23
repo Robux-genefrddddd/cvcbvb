@@ -135,7 +135,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const securityCheck = await checkSecurityBeforeAuth(email, true);
 
       if (!securityCheck.allowed) {
-        const errorMsg = securityCheck.reason || "Registration blocked by security check";
+        const errorMsg =
+          securityCheck.reason || "Registration blocked by security check";
         setError(errorMsg);
         throw new Error(errorMsg);
       }
@@ -178,7 +179,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const securityCheck = await checkSecurityBeforeAuth(email, false);
 
       if (!securityCheck.allowed) {
-        const errorMsg = securityCheck.reason || "Login blocked by security check";
+        const errorMsg =
+          securityCheck.reason || "Login blocked by security check";
         setError(errorMsg);
         throw new Error(errorMsg);
       }

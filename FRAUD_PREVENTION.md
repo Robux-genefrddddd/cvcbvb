@@ -7,6 +7,7 @@ This application implements a comprehensive fraud prevention system designed to 
 ## Key Components
 
 ### 1. **Device Fingerprinting**
+
 - **File**: `client/lib/deviceFingerprint.ts`
 - **Technology**: Fingerprint2 (FingerprintJS)
 - **Purpose**: Generate unique device identifiers based on browser characteristics
@@ -19,6 +20,7 @@ This application implements a comprehensive fraud prevention system designed to 
   - Plugin detection
 
 ### 2. **VPN/Proxy Detection**
+
 - **File**: `server/routes/security.ts`
 - **Service**: IP2Proxy LITE API
 - **API Key**: Set via environment variable `IP2PROXY_API_KEY`
@@ -30,6 +32,7 @@ This application implements a comprehensive fraud prevention system designed to 
   - Threat level assessment
 
 ### 3. **IP Geolocation Tracking**
+
 - **File**: `server/routes/security.ts`
 - **Purpose**: Track user location and detect suspicious patterns
 - **Features**:
@@ -39,6 +42,7 @@ This application implements a comprehensive fraud prevention system designed to 
   - Adjacent country allowance for legitimate travel
 
 ### 4. **Browser Extension Detection**
+
 - **File**: `client/lib/securityCheck.ts`
 - **Purpose**: Detect proxy and anonymization browser extensions
 - **Blocked Extensions**:
@@ -101,6 +105,7 @@ Duration: Permanent
 Performs comprehensive security validation before login/register.
 
 **Request Body**:
+
 ```json
 {
   "email": "user@example.com",
@@ -110,6 +115,7 @@ Performs comprehensive security validation before login/register.
 ```
 
 **Success Response** (200):
+
 ```json
 {
   "allowed": true,
@@ -118,6 +124,7 @@ Performs comprehensive security validation before login/register.
 ```
 
 **Blocked Response** (403):
+
 ```json
 {
   "allowed": false,
@@ -127,6 +134,7 @@ Performs comprehensive security validation before login/register.
 ```
 
 **Types**:
+
 - `vpn` - VPN/proxy detected
 - `threat` - Suspicious IP
 - `location_change` - Impossible travel
@@ -139,7 +147,7 @@ Performs comprehensive security validation before login/register.
 
 ### Client-Side (Login/Register)
 
-1. **Before submit**: Call `getDeviceFingerprint()` 
+1. **Before submit**: Call `getDeviceFingerprint()`
 2. **On submit**: Call `checkSecurityBeforeAuth(email, isRegister)`
 3. **If blocked**: Display error message and prevent auth attempt
 
@@ -162,6 +170,7 @@ Performs comprehensive security validation before login/register.
 **File**: `server/config/securityConfig.ts`
 
 Customize:
+
 - Lock duration
 - Adjacent countries allowed
 - Extension blocklist
@@ -178,38 +187,44 @@ Get your free IP2Proxy API key at: https://www.ip2proxy.com/
 ## Testing Fraud Prevention
 
 ### Test VPN Block
+
 1. Connect to a VPN
 2. Try to login/register
 3. Should see: "Veuillez désactiver votre VPN..."
 
 ### Test Device Change
+
 1. Register with Device A
 2. Try to login from Device B
 3. Should be locked for 24 hours
 
 ### Test Location Jump
+
 1. Last login from France (FI)
 2. Attempt login from Japan (JP)
 3. Should be locked for 24 hours
 
 ### Test Permanent Ban
+
 1. Trigger 3+ violations on same IP
 2. All future attempts from that IP → Permanent block
 
 ## Security Best Practices
 
 ### What This System Prevents
+
 ✅ VPN/proxy abuse  
 ✅ Multi-accounting from one device  
 ✅ Impossible travel detection  
 ✅ Malicious IP blocking  
-✅ Permanent bans on repeat offenders  
+✅ Permanent bans on repeat offenders
 
 ### What This System Does NOT Prevent
+
 ❌ Password brute force (add rate limiting)  
 ❌ Credential stuffing (add CAPTCHA)  
 ❌ Social engineering  
-❌ Phishing  
+❌ Phishing
 
 ### Recommendations
 
@@ -223,15 +238,18 @@ Get your free IP2Proxy API key at: https://www.ip2proxy.com/
 ## Troubleshooting
 
 ### "API key not configured"
+
 - Set `IP2PROXY_API_KEY` environment variable
 - Restart dev server
 
 ### Legitimate users blocked
+
 - Check "Adjacent Countries" setting
 - Review error type in response
 - Whitelist if needed (add to database)
 
 ### False positives with travel
+
 - Extend adjacent country list in config
 - Increase location change threshold hours
 - Add manual whitelist mechanism
@@ -239,12 +257,14 @@ Get your free IP2Proxy API key at: https://www.ip2proxy.com/
 ## Files Modified/Created
 
 **New Files**:
+
 - `client/lib/deviceFingerprint.ts` - Device ID generation
 - `client/lib/securityCheck.ts` - Client security utilities
 - `server/routes/security.ts` - Security check endpoint
 - `server/config/securityConfig.ts` - Configuration
 
 **Modified Files**:
+
 - `server/index.ts` - Added security endpoint
 - `client/context/AuthContext.tsx` - Integrated security checks
 - `.env` - Added IP2Proxy configuration
@@ -252,10 +272,12 @@ Get your free IP2Proxy API key at: https://www.ip2proxy.com/
 ## Support
 
 For issues with IP2Proxy API:
+
 - Visit: https://www.ip2proxy.com/support
 - Documentation: https://www.ip2proxy.com/developer
 
 For device fingerprinting issues:
+
 - Visit: https://github.com/fingerprintjs
 
 ## Summary

@@ -13,7 +13,7 @@ export interface SecurityCheckRequest {
 
 export const checkSecurityBeforeAuth = async (
   email: string,
-  isRegister: boolean = false
+  isRegister: boolean = false,
 ): Promise<SecurityCheckResult> => {
   try {
     const fingerprint = await getDeviceFingerprint();
@@ -67,8 +67,7 @@ export const detectBrowserExtensions = (): string[] => {
   suspiciousExtensions.forEach((ext) => {
     const img = document.createElement("img");
     img.src = `chrome-extension://${ext.id}/manifest.json`;
-    img.onerror = () => {
-    };
+    img.onerror = () => {};
     img.onload = () => {
       extensions.push(ext.name);
     };

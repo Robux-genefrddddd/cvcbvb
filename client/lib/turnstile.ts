@@ -6,7 +6,7 @@ export interface TurnstileVerifyResponse {
 }
 
 export const verifyCaptchaToken = async (
-  token: string
+  token: string,
 ): Promise<TurnstileVerifyResponse> => {
   try {
     const response = await fetch("/api/captcha/verify", {

@@ -7,12 +7,14 @@
 **Objective**: Verify VPN detection blocks login attempts
 
 **Steps**:
+
 1. Connect to any VPN service
 2. Go to login/register page
 3. Try to log in with valid credentials
 4. **Expected**: Blocked with message "Veuillez désactiver votre VPN..."
 
 **What It Tests**:
+
 - IP2Proxy VPN detection working
 - Hard block enforcement
 - French error message display
@@ -24,9 +26,11 @@
 **Objective**: Verify new device detection blocks login
 
 **Prerequisites**:
+
 - Account created on Device A
 
 **Steps**:
+
 1. From Device A: Register account with test@example.com
 2. Switch to Device B (different browser/computer)
 3. Try to login with test@example.com
@@ -34,6 +38,7 @@
 5. Try again after 24 hours: Should work
 
 **What It Tests**:
+
 - Fingerprint generation working
 - Device tracking enabled
 - 24-hour lock enforcement
@@ -45,10 +50,12 @@
 **Objective**: Verify impossible travel detection
 
 **Prerequisites**:
+
 - IP2Proxy API key configured
 - Access to 2 different countries' IPs
 
 **Steps**:
+
 1. Login from France (French IP)
 2. Wait < 1 minute
 3. Switch to Japan IP (via VPN... wait, that's blocked 😄)
@@ -58,6 +65,7 @@
 6. Try again after 24 hours: Should work
 
 **What It Tests**:
+
 - IP geolocation working
 - Rapid location change detection
 - Time-based validation
@@ -69,6 +77,7 @@
 **Objective**: Verify permanent IP ban after 3 violations
 
 **Steps**:
+
 1. From IP A: Attempt 3+ violations
    - Try VPN login
    - Try new device
@@ -78,6 +87,7 @@
 4. **Expected**: Permanent block (won't unlock after 24h)
 
 **What It Tests**:
+
 - Violation tracking
 - Permanent ban trigger
 - IP-based blocking
@@ -91,11 +101,11 @@
 Open browser console and run:
 
 ```javascript
-import { getDeviceFingerprint } from '@/lib/deviceFingerprint';
+import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
-getDeviceFingerprint().then(fp => {
-  console.log('Device Fingerprint:', fp.fingerprint);
-  console.log('Components:', fp.components);
+getDeviceFingerprint().then((fp) => {
+  console.log("Device Fingerprint:", fp.fingerprint);
+  console.log("Components:", fp.components);
 });
 ```
 
@@ -105,7 +115,7 @@ Add to browser console network tab:
 
 ```javascript
 // Before submitting login form:
-console.log('About to check security for:', email);
+console.log("About to check security for:", email);
 
 // Network tab will show POST to /api/security/check
 // Check response for detailed information
@@ -123,6 +133,7 @@ In DevTools Network tab:
 6. View Response tab for details
 
 **Sample Response** (if blocked):
+
 ```json
 {
   "allowed": false,
@@ -136,26 +147,31 @@ In DevTools Network tab:
 ## Testing Checklist
 
 ### Basic Functionality
+
 - [ ] Login page loads without errors
 - [ ] Register page loads without errors
 - [ ] Console shows no JavaScript errors
 
 ### VPN Detection
+
 - [ ] VPN detected and blocked
 - [ ] Error message in French displayed
 - [ ] User cannot proceed after VPN block
 
 ### Device Fingerprinting
+
 - [ ] Different devices generate different fingerprints
 - [ ] Same device always generates same fingerprint
 - [ ] New device detected on repeat login
 
 ### Location Tracking
+
 - [ ] IP geolocation working (check IP2Proxy API)
 - [ ] Country codes captured correctly
 - [ ] Location changes flagged within 24 hours
 
 ### Account Locking
+
 - [ ] Account locks for 24 hours on violation
 - [ ] Lock automatically expires after 24 hours
 - [ ] User can login again after unlock
@@ -167,11 +183,13 @@ In DevTools Network tab:
 ### If VPN Not Detected
 
 1. **Check IP2Proxy API Key**:
+
    ```bash
    echo $IP2PROXY_API_KEY
    ```
 
 2. **Test API Directly**:
+
    ```bash
    curl "https://api.ip2proxy.com/v2/?key=YOUR_KEY&ip=YOUR_IP&format=json"
    ```
@@ -183,9 +201,10 @@ In DevTools Network tab:
 ### If Fingerprints Not Matching
 
 1. **Enable Fingerprint Logging**:
+
    ```javascript
    // In deviceFingerprint.ts:
-   console.log('Generated fingerprint:', fingerprint);
+   console.log("Generated fingerprint:", fingerprint);
    ```
 
 2. **Check Browser Cache**:
@@ -195,16 +214,17 @@ In DevTools Network tab:
 
 3. **Verify Fingerprint2 Library**:
    ```javascript
-   console.log('Fingerprint2 version:', Fingerprint2.version);
+   console.log("Fingerprint2 version:", Fingerprint2.version);
    ```
 
 ### If Location Detection Not Working
 
 1. **Verify IP Data**:
+
    ```javascript
    // Add to security.ts:
-   console.log('IP check result:', vpnCheck);
-   console.log('Country:', vpnCheck.country);
+   console.log("IP check result:", vpnCheck);
+   console.log("Country:", vpnCheck.country);
    ```
 
 2. **Test IP Geolocation Service**:
@@ -238,25 +258,25 @@ In DevTools Network tab:
 ✅ **New Devices**: Locked for 24h  
 ✅ **Rapid Travel**: Locked for 24h  
 ✅ **Malicious IPs**: Blocked immediately  
-✅ **Repeat Offenders**: Permanent ban  
+✅ **Repeat Offenders**: Permanent ban
 
 ### What's NOT Protected
 
 ❌ Password guessing (implement rate limiting)  
 ❌ Credential stuffing (implement CAPTCHA)  
 ❌ Account enumeration (validate emails carefully)  
-❌ Session hijacking (add HTTPS-only cookies)  
+❌ Session hijacking (add HTTPS-only cookies)
 
 ---
 
 ## Common Issues & Solutions
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| "IP2Proxy API key not configured" | Missing env var | Set `IP2PROXY_API_KEY` and restart |
-| All users blocked as VPN | API returning false positives | Check IP2Proxy dashboard, whitelist if needed |
-| Fingerprints not matching | Cache cleared | Check browser storage, force regeneration |
-| Locked out for 24h | Legitimate travel detected | Wait 24h or whitelist in code |
+| Issue                             | Cause                         | Solution                                      |
+| --------------------------------- | ----------------------------- | --------------------------------------------- |
+| "IP2Proxy API key not configured" | Missing env var               | Set `IP2PROXY_API_KEY` and restart            |
+| All users blocked as VPN          | API returning false positives | Check IP2Proxy dashboard, whitelist if needed |
+| Fingerprints not matching         | Cache cleared                 | Check browser storage, force regeneration     |
+| Locked out for 24h                | Legitimate travel detected    | Wait 24h or whitelist in code                 |
 
 ---
 
@@ -276,14 +296,17 @@ In DevTools Network tab:
 ## Support Resources
 
 **IP2Proxy**:
+
 - Docs: https://www.ip2proxy.com/developer
 - API Status: https://www.ip2proxy.com/status
 
 **Fingerprint2**:
+
 - GitHub: https://github.com/fingerprintjs/fingerprintjs2
 - Docs: https://github.com/fingerprintjs/fingerprintjs2#installation
 
 **Firebase**:
+
 - Auth Docs: https://firebase.google.com/docs/auth
 
 ---

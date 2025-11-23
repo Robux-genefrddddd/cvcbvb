@@ -38,7 +38,9 @@ const getClientIp = (req: any): string => {
   );
 };
 
-const checkVpnWithIp2Proxy = async (ip: string): Promise<{
+const checkVpnWithIp2Proxy = async (
+  ip: string,
+): Promise<{
   isVpn: boolean;
   country: string;
   proxy: boolean;
@@ -57,7 +59,7 @@ const checkVpnWithIp2Proxy = async (ip: string): Promise<{
 
   try {
     const response = await fetch(
-      `https://api.ip2proxy.com/v2/?key=${apiKey}&ip=${ip}&format=json`
+      `https://api.ip2proxy.com/v2/?key=${apiKey}&ip=${ip}&format=json`,
     );
 
     if (!response.ok) {
@@ -77,7 +79,8 @@ const checkVpnWithIp2Proxy = async (ip: string): Promise<{
       (data.proxy_type === "VPN" ||
         data.proxy_type === "Proxy" ||
         data.proxy_type === "Tor");
-    const isThreat = data.threat_level === "High" || data.threat_level === "Medium";
+    const isThreat =
+      data.threat_level === "High" || data.threat_level === "Medium";
 
     return {
       isVpn,
@@ -104,18 +107,19 @@ const isIpBlocked = (ip: string): boolean => {
 const isDeviceBlocked = (fingerprint: string): boolean => {
   const blocked = blockedList.get("device") || [];
   return blocked.some(
-    (entry) => entry.deviceFingerprint === fingerprint && entry.permanent
+    (entry) => entry.deviceFingerprint === fingerprint && entry.permanent,
   );
 };
 
-const getLastLogin = (
-  email: string
-): SecurityRecord | undefined => {
+const getLastLogin = (email: string): SecurityRecord | undefined => {
   const records = securityDatabase.get(email);
   return records ? records[records.length - 1] : undefined;
 };
 
-const calculateCountryDistance = (country1: string, country2: string): boolean => {
+const calculateCountryDistance = (
+  country1: string,
+  country2: string,
+): boolean => {
   const neighbors: Record<string, string[]> = {
     US: ["CA", "MX"],
     CA: ["US"],
@@ -132,7 +136,22 @@ const calculateCountryDistance = (country1: string, country2: string): boolean =
     JP: ["KR"],
     KR: ["JP", "CN", "RU"],
     CN: ["KR", "RU", "VN", "LA", "MM", "NP", "BT", "IN"],
-    RU: ["CN", "KR", "MN", "KZ", "UZ", "TM", "AZ", "GE", "UA", "BY", "PL", "LT", "LV", "EE"],
+    RU: [
+      "CN",
+      "KR",
+      "MN",
+      "KZ",
+      "UZ",
+      "TM",
+      "AZ",
+      "GE",
+      "UA",
+      "BY",
+      "PL",
+      "LT",
+      "LV",
+      "EE",
+    ],
     AU: ["NZ"],
     NZ: ["AU"],
   };
@@ -175,7 +194,7 @@ export const handleSecurityCheck: RequestHandler = async (req, res) => {
     const accountLock = accountLocks.get(email);
     if (accountLock && accountLock.lockedUntil > Date.now()) {
       const remainingMinutes = Math.ceil(
-        (accountLock.lockedUntil - Date.now()) / 60000
+        (accountLock.lockedUntil - Date.now()) / 60000,
       );
       return res.status(403).json({
         allowed: false,
@@ -232,7 +251,7 @@ export const handleSecurityCheck: RequestHandler = async (req, res) => {
         if (lastLogin.country !== vpnCheck.country && hoursDiff < 24) {
           const isAdjacent = calculateCountryDistance(
             lastLogin.country,
-            vpnCheck.country
+            vpnCheck.country,
           );
 
           if (!isAdjacent) {
