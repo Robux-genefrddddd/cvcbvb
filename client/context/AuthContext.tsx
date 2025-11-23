@@ -108,6 +108,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                   plan: userData.plan || "Gratuit",
                   isBanned: userData.isBanned || false,
                   isSuspended: userData.isSuspended || false,
+                  avatar: userData.avatar || "👤",
+                  avatarType: userData.avatarType || "emoji",
+                  messageCount: userData.messageCount || 0,
                 };
                 setUser(newUser);
 
@@ -143,6 +146,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                   name: "",
                   email: firebaseUser.email || "",
                   plan: "Gratuit",
+                  avatar: "👤",
+                  avatarType: "emoji",
                 });
               }
             } catch (docErr) {
