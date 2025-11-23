@@ -90,14 +90,10 @@ export default function Login() {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email Field */}
-              <div
-                style={{
-                  animation: "fadeInUp 0.6s ease-out 0.3s both",
-                }}
-              >
+              <div>
                 <label
                   className="block text-sm font-medium mb-2"
-                  style={{ color: "#FFFFFF" }}
+                  style={{ color: "#1a1a1a" }}
                 >
                   Email
                 </label>
@@ -110,31 +106,27 @@ export default function Login() {
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-300"
                   style={{
-                    backgroundColor: "#1A1A1A",
-                    borderColor: "#2A2A2A",
-                    color: "#FFFFFF",
+                    backgroundColor: "#f5f5f5",
+                    borderColor: "#d0d0d0",
+                    color: "#1a1a1a",
                   }}
                   onFocus={(e) => {
                     (e.target as HTMLElement).style.borderColor = "#0A84FF";
                     (e.target as HTMLElement).style.boxShadow =
-                      "0 0 20px rgba(10, 132, 255, 0.2)";
+                      "0 0 0 3px rgba(10, 132, 255, 0.1)";
                   }}
                   onBlur={(e) => {
-                    (e.target as HTMLElement).style.borderColor = "#2A2A2A";
+                    (e.target as HTMLElement).style.borderColor = "#d0d0d0";
                     (e.target as HTMLElement).style.boxShadow = "none";
                   }}
                 />
               </div>
 
               {/* Password Field */}
-              <div
-                style={{
-                  animation: "fadeInUp 0.6s ease-out 0.4s both",
-                }}
-              >
+              <div>
                 <label
                   className="block text-sm font-medium mb-2"
-                  style={{ color: "#FFFFFF" }}
+                  style={{ color: "#1a1a1a" }}
                 >
                   Mot de passe
                 </label>
@@ -147,17 +139,17 @@ export default function Login() {
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-300"
                   style={{
-                    backgroundColor: "#1A1A1A",
-                    borderColor: "#2A2A2A",
-                    color: "#FFFFFF",
+                    backgroundColor: "#f5f5f5",
+                    borderColor: "#d0d0d0",
+                    color: "#1a1a1a",
                   }}
                   onFocus={(e) => {
                     (e.target as HTMLElement).style.borderColor = "#0A84FF";
                     (e.target as HTMLElement).style.boxShadow =
-                      "0 0 20px rgba(10, 132, 255, 0.2)";
+                      "0 0 0 3px rgba(10, 132, 255, 0.1)";
                   }}
                   onBlur={(e) => {
-                    (e.target as HTMLElement).style.borderColor = "#2A2A2A";
+                    (e.target as HTMLElement).style.borderColor = "#d0d0d0";
                     (e.target as HTMLElement).style.boxShadow = "none";
                   }}
                 />
