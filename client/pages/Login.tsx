@@ -55,9 +55,7 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #0A84FF 0%, #000000 100%)",
-      }}
+      style={{ backgroundColor: "#000" }}
     >
 
       <div className="w-full max-w-md relative z-10">
