@@ -64,7 +64,9 @@ const AppRoutes = () => {
   const { warnings, alerts, maintenanceMode, user, verifyLicense } = useAuth();
   const [showLicenseModal, setShowLicenseModal] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
-  const isAdmin = user?.email === "founder@example.com" || user?.email === "jo.m.efarit.1.4@gmail.com";
+  const isAdmin =
+    user?.email === "founder@example.com" ||
+    user?.email === "jo.m.efarit.1.4@gmail.com";
 
   useEffect(() => {
     AntiBypass.initializeAllProtections();

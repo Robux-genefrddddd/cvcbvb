@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Plus, LogOut, Trash2, Clock, UserCircle, Edit2, Check, X } from "lucide-react";
+import {
+  Plus,
+  LogOut,
+  Trash2,
+  Clock,
+  UserCircle,
+  Edit2,
+  Check,
+  X,
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -117,7 +126,10 @@ export default function Sidebar({
             conversations.map((conv) => (
               <div key={conv.id}>
                 {editingId === conv.id ? (
-                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{ backgroundColor: "rgba(10, 132, 255, 0.1)" }}>
+                  <div
+                    className="flex items-center gap-2 px-3 py-2.5 rounded-lg"
+                    style={{ backgroundColor: "rgba(10, 132, 255, 0.1)" }}
+                  >
                     <input
                       type="text"
                       value={editingTitle}
@@ -177,7 +189,9 @@ export default function Sidebar({
                       className="flex-shrink-0 mt-1"
                       style={{
                         color:
-                          activeConversationId === conv.id ? "#0A84FF" : "#666666",
+                          activeConversationId === conv.id
+                            ? "#0A84FF"
+                            : "#666666",
                       }}
                     />
                     <div className="flex-1 min-w-0">

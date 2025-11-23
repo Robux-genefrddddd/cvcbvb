@@ -115,7 +115,10 @@ export default function LicenseDialog({ isOpen, onClose }: LicenseDialogProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: "#111827" }}>
+            <label
+              className="block text-sm font-semibold mb-2"
+              style={{ color: "#111827" }}
+            >
               License Key
             </label>
             <input
@@ -157,12 +160,14 @@ export default function LicenseDialog({ isOpen, onClose }: LicenseDialogProps) {
               }}
               onMouseEnter={(e) => {
                 if (licenseKey.trim()) {
-                  (e.currentTarget as HTMLElement).style.backgroundColor = "#0070DD";
+                  (e.currentTarget as HTMLElement).style.backgroundColor =
+                    "#0070DD";
                 }
               }}
               onMouseLeave={(e) => {
                 if (licenseKey.trim()) {
-                  (e.currentTarget as HTMLElement).style.backgroundColor = "#0A84FF";
+                  (e.currentTarget as HTMLElement).style.backgroundColor =
+                    "#0A84FF";
                 }
               }}
             >
@@ -178,10 +183,12 @@ export default function LicenseDialog({ isOpen, onClose }: LicenseDialogProps) {
                 color: "#111827",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "#E5E7EB";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "#E5E7EB";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "#F3F4F6";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "#F3F4F6";
               }}
             >
               Cancel
