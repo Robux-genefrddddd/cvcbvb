@@ -94,10 +94,10 @@ export default function Menu({ isDark, onThemeToggle }: MenuProps) {
 
   return (
     <>
-      {/* Hamburger Button */}
+      {/* Hamburger Button - Only show on mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="btn-icon-glass w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-1"
+        className="lg:hidden btn-icon-glass w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-1"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
