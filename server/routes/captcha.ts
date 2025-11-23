@@ -1,14 +1,14 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 interface CaptchaVerifyRequest {
   token: string;
 }
 
-interface CaptchaVerifyResponse {
+interface TurnstileVerifyResponse {
   success: boolean;
   challenge_ts?: string;
   hostname?: string;
-  error_codes?: string[];
+  "error-codes"?: string[];
   score?: number;
   action?: string;
 }
@@ -33,46 +33,48 @@ export const handleCaptchaVerify: RequestHandler = async (req, res) => {
       });
     }
 
+    const formData = new URLSearchParams();
+    formData.append("secret", secretKey);
+    formData.append("response", token);
+    if (req.ip) {
+      formData.append("remoteip", req.ip);
+    }
+
     const response = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          secret: secretKey,
-          response: token,
-        }),
+        body: formData,
       },
     );
 
     if (!response.ok) {
-      console.error("Cloudflare API error:", response.statusText);
+      console.error("Cloudflare API error:", response.status, response.statusText);
       return res.status(500).json({
         success: false,
         error: "Failed to verify captcha",
       });
     }
 
-    const data = (await response.json()) as CaptchaVerifyResponse;
+    const data = (await response.json()) as TurnstileVerifyResponse;
 
     if (!data.success) {
+      console.error("Turnstile verification failed:", data["error-codes"]);
       return res.status(403).json({
         success: false,
         error: "Captcha verification failed",
-        error_codes: data.error_codes,
+        error_codes: data["error-codes"] ?? [],
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       challenge_ts: data.challenge_ts,
       hostname: data.hostname,
     });
   } catch (error) {
     console.error("Captcha verification error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Captcha verification failed",
     });
