@@ -259,7 +259,6 @@ export default function Login() {
                 }}
               >
                 <Turnstile
-                  ref={captchaRef}
                   sitekey={getSiteKey()}
                   onVerify={(token) => setCaptchaToken(token)}
                   onError={() => {
