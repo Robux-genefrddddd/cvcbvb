@@ -79,7 +79,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               }
             } catch (docErr) {
               if (!isMounted) return;
-              if (docErr instanceof Error && docErr.message?.includes("aborted")) {
+              if (
+                docErr instanceof Error &&
+                (docErr.message?.includes("aborted") ||
+                  docErr.message?.includes("AbortError"))
+              ) {
                 return;
               }
               console.error("Error fetching user document:", docErr);
