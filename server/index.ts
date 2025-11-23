@@ -47,5 +47,11 @@ export function createServer() {
   app.post("/api/license/activate", handleLicenseActivate);
   app.post("/api/license/increment", handleIncrementMessageCount);
 
+  // Admin routes
+  app.post("/api/admin/license/create", handleCreateLicense);
+  app.post("/api/admin/user/action", handleUserAction);
+  app.post("/api/admin/maintenance", handleMaintenanceMode);
+  app.get("/api/admin/stats", handleGetStats);
+
   return app;
 }
