@@ -293,7 +293,10 @@ export default function Sidebar({
       </div>
 
       {/* Avatar Modal */}
-      <AvatarModal isOpen={showAvatarModal} onClose={() => setShowAvatarModal(false)} />
+      <AvatarModal
+        isOpen={showAvatarModal}
+        onClose={() => setShowAvatarModal(false)}
+      />
     </div>
   );
 }

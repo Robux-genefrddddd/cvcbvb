@@ -64,7 +64,11 @@ export default function AvatarModal({ isOpen, onClose }: AvatarModalProps) {
   const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [activeTab, setActiveTab] = useState<"emoji" | "url" | "upload">(
-    user?.avatarType === "emoji" ? "emoji" : user?.avatarType === "url" ? "url" : "emoji",
+    user?.avatarType === "emoji"
+      ? "emoji"
+      : user?.avatarType === "url"
+        ? "url"
+        : "emoji",
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -158,7 +162,10 @@ export default function AvatarModal({ isOpen, onClose }: AvatarModalProps) {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b" style={{ borderColor: "#1A1A1A" }}>
+        <div
+          className="flex gap-2 mb-6 border-b"
+          style={{ borderColor: "#1A1A1A" }}
+        >
           {(["emoji", "url", "upload"] as const).map((tab) => (
             <button
               key={tab}
@@ -186,7 +193,9 @@ export default function AvatarModal({ isOpen, onClose }: AvatarModalProps) {
                 className="text-3xl p-2 rounded-lg hover:bg-white/10 transition-colors"
                 style={{
                   backgroundColor:
-                    selectedEmoji === emoji ? "rgba(10, 132, 255, 0.2)" : "transparent",
+                    selectedEmoji === emoji
+                      ? "rgba(10, 132, 255, 0.2)"
+                      : "transparent",
                   border:
                     selectedEmoji === emoji
                       ? "2px solid #0A84FF"
@@ -203,7 +212,10 @@ export default function AvatarModal({ isOpen, onClose }: AvatarModalProps) {
         {activeTab === "url" && (
           <div className="space-y-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "#FFFFFF" }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#FFFFFF" }}
+              >
                 Image URL
               </label>
               <input
@@ -278,10 +290,12 @@ export default function AvatarModal({ isOpen, onClose }: AvatarModalProps) {
             color: "#FFFFFF",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "rgba(255, 255, 255, 0.05)";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "transparent";
           }}
         >
           Done

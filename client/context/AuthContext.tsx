@@ -51,7 +51,10 @@ interface AuthContextType {
   canSendMessage: () => boolean;
   verifyLicense: () => Promise<LicenseVerificationResponse | null>;
   activateLicense: (licenseKey: string) => Promise<void>;
-  updateAvatar: (avatar: string, type: "emoji" | "image" | "url") => Promise<void>;
+  updateAvatar: (
+    avatar: string,
+    type: "emoji" | "image" | "url",
+  ) => Promise<void>;
   warnings: Warning[];
   alerts: SecurityAlert[];
   maintenanceMode: boolean;
