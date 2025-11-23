@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Plus, User } from "lucide-react";
 import Menu from "./Menu";
+import Sidebar from "./Sidebar";
+import InputArea from "./InputArea";
 
 interface Message {
   id: string;
@@ -9,19 +11,66 @@ interface Message {
   timestamp: Date;
 }
 
+interface Conversation {
+  id: string;
+  title: string;
+  timestamp: Date;
+  messages: Message[];
+}
+
 export default function Chatbot() {
-  const [messages, setMessages] = useState<Message[]>([
+  const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "1",
-      content: "Hello! I'm your AI assistant. How can I help you today?",
-      sender: "assistant",
-      timestamp: new Date(),
+      title: "How to learn React",
+      timestamp: new Date(Date.now() - 3600000),
+      messages: [
+        {
+          id: "1",
+          content: "Hello! I'm your AI assistant. How can I help you today?",
+          sender: "assistant",
+          timestamp: new Date(),
+        },
+      ],
+    },
+    {
+      id: "2",
+      title: "JavaScript best practices",
+      timestamp: new Date(Date.now() - 86400000),
+      messages: [
+        {
+          id: "1",
+          content: "Let's discuss JavaScript best practices.",
+          sender: "assistant",
+          timestamp: new Date(),
+        },
+      ],
+    },
+    {
+      id: "3",
+      title: "Web development tips",
+      timestamp: new Date(Date.now() - 172800000),
+      messages: [
+        {
+          id: "1",
+          content: "Here are some useful web development tips.",
+          sender: "assistant",
+          timestamp: new Date(),
+        },
+      ],
     },
   ]);
+
+  const [activeConversationId, setActiveConversationId] = useState<string>("1");
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const activeConversation = conversations.find(
+    (conv) => conv.id === activeConversationId,
+  );
+  const messages = activeConversation?.messages || [];
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -58,7 +107,7 @@ export default function Chatbot() {
   }, [messages]);
 
   const handleSendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !activeConversation) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -67,7 +116,13 @@ export default function Chatbot() {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv.id === activeConversationId
+          ? { ...conv, messages: [...conv.messages, userMessage] }
+          : conv,
+      ),
+    );
     setInput("");
     setIsLoading(true);
 
@@ -79,148 +134,153 @@ export default function Chatbot() {
         sender: "assistant",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === activeConversationId
+            ? { ...conv, messages: [...conv.messages, assistantMessage] }
+            : conv,
+        ),
+      );
       setIsLoading(false);
     }, 800);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
+  const handleNewConversation = () => {
+    const newId = Date.now().toString();
+    const newConversation: Conversation = {
+      id: newId,
+      title: "New Conversation",
+      timestamp: new Date(),
+      messages: [
+        {
+          id: "1",
+          content: "Hello! I'm your AI assistant. How can I help you today?",
+          sender: "assistant",
+          timestamp: new Date(),
+        },
+      ],
+    };
+    setConversations((prev) => [newConversation, ...prev]);
+    setActiveConversationId(newId);
+  };
+
+  const handleDeleteConversation = (id: string) => {
+    setConversations((prev) => prev.filter((conv) => conv.id !== id));
+    if (activeConversationId === id && conversations.length > 1) {
+      const remaining = conversations.filter((conv) => conv.id !== id);
+      setActiveConversationId(remaining[0].id);
     }
   };
 
+  const handleSelectConversation = (id: string) => {
+    setActiveConversationId(id);
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-[#0a0a0a]">
-      {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-900 px-4 py-3 sm:px-6 md:px-8 bg-white dark:bg-black flex items-center justify-between gap-4">
-        {/* Left: Logo & Menu */}
-        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-          {/* Minimalist Logo */}
-          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center">
-            <span className="text-white dark:text-black font-bold text-lg">
-              ✦
-            </span>
-          </div>
-          {/* Title - Hidden on very small screens */}
-          <div className="hidden sm:block min-w-0">
+    <div className="flex h-screen bg-white dark:bg-[#0a0a0a]">
+      {/* Fixed Sidebar */}
+      <Sidebar
+        conversations={conversations}
+        activeConversationId={activeConversationId}
+        onSelectConversation={handleSelectConversation}
+        onNewConversation={handleNewConversation}
+        onDeleteConversation={handleDeleteConversation}
+      />
+
+      {/* Main Chat Area */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Header */}
+        <div className="border-b border-gray-200 dark:border-gray-900 px-4 py-3 sm:px-6 md:px-8 bg-white dark:bg-black flex items-center justify-between gap-4">
+          {/* Left: Title */}
+          <div className="min-w-0">
             <h1 className="text-xl sm:text-2xl font-bold text-black dark:text-white truncate">
               Chat
             </h1>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-500">
-              Your AI Assistant
-            </p>
+          </div>
+
+          {/* Right: Action Buttons */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Quick Action Button */}
+            <button className="btn-icon-glass" title="New chat">
+              <Plus size={20} className="text-black dark:text-white" />
+            </button>
+
+            {/* User Profile Button */}
+            <button className="btn-icon-glass" title="User profile">
+              <User size={20} className="text-black dark:text-white" />
+            </button>
+
+            {/* Hamburger Menu - Only on mobile */}
+            <Menu isDark={isDark} onThemeToggle={handleThemeToggle} />
           </div>
         </div>
 
-        {/* Right: Action Buttons */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Quick Action Button */}
-          <button
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors duration-200"
-            title="New chat"
-          >
-            <Plus size={20} className="text-black dark:text-white" />
-          </button>
-
-          {/* User Profile Button */}
-          <button
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors duration-200"
-            title="User profile"
-          >
-            <User size={20} className="text-black dark:text-white" />
-          </button>
-
-          {/* Hamburger Menu */}
-          <Menu isDark={isDark} onThemeToggle={handleThemeToggle} />
-        </div>
-      </div>
-
-      {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto px-4 py-8 sm:px-8 bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${
-                message.sender === "user" ? "justify-end" : "justify-start"
-              } animate-fade-in`}
-            >
+        {/* Messages Container */}
+        <div className="flex-1 overflow-y-auto px-4 py-8 sm:px-8 bg-white dark:bg-black pb-32">
+          <div className="max-w-4xl mx-auto space-y-6">
+            {messages.map((message) => (
               <div
-                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-5 py-3 rounded-2xl break-words ${
-                  message.sender === "user"
-                    ? "bg-black dark:bg-white text-white dark:text-black rounded-br-sm"
-                    : "bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-bl-sm border border-gray-200 dark:border-gray-800"
-                }`}
+                key={message.id}
+                className={`flex ${
+                  message.sender === "user" ? "justify-end" : "justify-start"
+                } animate-fade-in`}
               >
-                <p className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
-                  {message.content}
-                </p>
-                <p
-                  className={`text-xs mt-2.5 ${
+                <div
+                  className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-5 py-3 rounded-2xl break-words ${
                     message.sender === "user"
-                      ? "text-gray-400 dark:text-gray-600"
-                      : "text-gray-500 dark:text-gray-500"
+                      ? "bg-black dark:bg-white text-white dark:text-black rounded-br-sm"
+                      : "bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-bl-sm border border-gray-200 dark:border-gray-800"
                   }`}
                 >
-                  {message.timestamp.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
-              </div>
-            </div>
-          ))}
-
-          {isLoading && (
-            <div className="flex justify-start animate-fade-in">
-              <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white px-5 py-3 rounded-2xl rounded-bl-sm border border-gray-200 dark:border-gray-800">
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
-                  <div
-                    className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.2s" }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.4s" }}
-                  ></div>
+                  <p className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                    {message.content}
+                  </p>
+                  <p
+                    className={`text-xs mt-2.5 ${
+                      message.sender === "user"
+                        ? "text-gray-400 dark:text-gray-600"
+                        : "text-gray-500 dark:text-gray-500"
+                    }`}
+                  >
+                    {message.timestamp.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
                 </div>
               </div>
-            </div>
-          )}
+            ))}
 
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
+            {isLoading && (
+              <div className="flex justify-start animate-fade-in">
+                <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white px-5 py-3 rounded-2xl rounded-bl-sm border border-gray-200 dark:border-gray-800">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.4s" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            )}
 
-      {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-900 px-4 py-4 sm:px-8 bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex gap-2 sm:gap-3">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-950 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent resize-none transition-colors"
-              rows={3}
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={!input.trim() || isLoading}
-              className="px-3 sm:px-4 py-3 bg-black hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 self-end flex-shrink-0"
-              title="Send message"
-            >
-              <Send size={18} />
-              <span className="hidden sm:inline text-sm">Send</span>
-            </button>
+            <div ref={messagesEndRef} />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-600 mt-2">
-            Press Enter to send, Shift+Enter for new line
-          </p>
         </div>
+
+        {/* Input Area Component */}
+        <InputArea
+          value={input}
+          onChange={setInput}
+          onSend={handleSendMessage}
+          disabled={isLoading}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

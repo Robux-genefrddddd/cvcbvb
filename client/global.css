@@ -118,3 +118,103 @@
     white-space: pre;
   }
 }
+
+@layer components {
+  /* Glassmorphism Button */
+  .btn-glass {
+    @apply backdrop-blur-md rounded-lg transition-all duration-300 text-black dark:text-white shadow-lg;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .dark .btn-glass {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-glass:active {
+    transform: scale(0.95);
+  }
+
+  .btn-glass:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Soft Glow Button (Primary) */
+  .btn-glow {
+    @apply bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium transition-all duration-300;
+    box-shadow:
+      0 0 20px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-glow:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 30px rgba(255, 255, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-glow:active {
+    transform: scale(0.95);
+  }
+
+  .btn-glow:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Icon Button with Glass */
+  .btn-icon-glass {
+    @apply p-2 backdrop-blur-md rounded-lg transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-icon-glass:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-icon-glass {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .btn-icon-glass:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .btn-icon-glass:active {
+    transform: scale(0.9);
+  }
+
+  /* Glass Input Style */
+  .input-glass {
+    @apply backdrop-blur-sm rounded-lg text-black dark:text-white placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .input-glass:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+  }
+
+  .dark .input-glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dark .input-glass:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+}
