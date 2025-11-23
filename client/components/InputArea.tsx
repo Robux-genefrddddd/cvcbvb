@@ -129,8 +129,16 @@ export default function InputArea({
               }}
               title="Send message"
             >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-lg bg-blue-600 relative group">
-                {user?.avatar || "👤"}
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-lg bg-blue-600 relative group overflow-hidden">
+                {user?.avatarType === "image" || user?.avatarType === "url" ? (
+                  <img
+                    src={user.avatar}
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  user?.avatar || "👤"
+                )}
                 <div
                   className="absolute inset-0 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{
