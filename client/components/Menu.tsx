@@ -142,7 +142,7 @@ export default function Menu({ isDark, onThemeToggle }: MenuProps) {
           </h2>
           <button
             onClick={handleNewConversation}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium text-sm"
+            className="btn-glow w-full flex items-center justify-center gap-2 px-4 py-2 text-sm"
           >
             <Plus size={18} />
             Nouvelle Conversation
