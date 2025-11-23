@@ -16,6 +16,7 @@ export default function Register() {
   // null = pas encore validé / expiré
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isCaptchaReady, setIsCaptchaReady] = useState(false);
+  const hcaptchaRef = useRef<HCaptcha>(null);
 
   const { register } = useAuth();
   const navigate = useNavigate();
