@@ -64,19 +64,19 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-black">
+    <div className="flex flex-col h-screen bg-white dark:bg-[#0a0a0a]">
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-800 px-6 py-4 sm:px-8">
-        <h1 className="text-2xl font-bold text-black dark:text-white">
+      <div className="border-b border-gray-200 dark:border-gray-900 px-6 py-4 sm:px-8 bg-white dark:bg-black">
+        <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
           Chat
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-gray-600 dark:text-gray-500 mt-1">
           Your AI Assistant
         </p>
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto px-6 py-8 sm:px-8">
+      <div className="flex-1 overflow-y-auto px-4 py-8 sm:px-8 bg-white dark:bg-black">
         <div className="max-w-4xl mx-auto space-y-6">
           {messages.map((message) => (
             <div
@@ -86,20 +86,20 @@ export default function Chatbot() {
               } animate-fade-in`}
             >
               <div
-                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-4 py-3 rounded-2xl ${
+                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-5 py-3 rounded-2xl break-words ${
                   message.sender === "user"
-                    ? "bg-black dark:bg-white text-white dark:text-black rounded-br-none"
-                    : "bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-bl-none border border-gray-200 dark:border-gray-800"
+                    ? "bg-black dark:bg-white text-white dark:text-black rounded-br-sm"
+                    : "bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-bl-sm border border-gray-200 dark:border-gray-800"
                 }`}
               >
-                <p className="text-sm sm:text-base leading-relaxed">
+                <p className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
                   {message.content}
                 </p>
                 <p
-                  className={`text-xs mt-2 ${
+                  className={`text-xs mt-2.5 ${
                     message.sender === "user"
-                      ? "text-gray-300 dark:text-gray-600"
-                      : "text-gray-500 dark:text-gray-400"
+                      ? "text-gray-400 dark:text-gray-600"
+                      : "text-gray-500 dark:text-gray-500"
                   }`}
                 >
                   {message.timestamp.toLocaleTimeString([], {
@@ -112,12 +112,12 @@ export default function Chatbot() {
           ))}
 
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white px-4 py-3 rounded-2xl rounded-bl-none border border-gray-200 dark:border-gray-800">
+            <div className="flex justify-start animate-fade-in">
+              <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white px-5 py-3 rounded-2xl rounded-bl-sm border border-gray-200 dark:border-gray-800">
                 <div className="flex space-x-2">
                   <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce animation-delay-200"></div>
-                  <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce animation-delay-400"></div>
+                  <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                  <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
                 </div>
               </div>
             </div>
@@ -128,27 +128,28 @@ export default function Chatbot() {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4 sm:px-8 bg-white dark:bg-black">
+      <div className="border-t border-gray-200 dark:border-gray-900 px-4 py-4 sm:px-8 bg-white dark:bg-black">
         <div className="max-w-4xl mx-auto">
-          <div className="flex gap-3">
+          <div className="flex gap-2 sm:gap-3">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent resize-none"
+              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-950 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent resize-none transition-colors"
               rows={3}
             />
             <button
               onClick={handleSendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-4 sm:px-5 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 self-end"
+              className="px-3 sm:px-4 py-3 bg-black hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 self-end flex-shrink-0"
+              title="Send message"
             >
               <Send size={18} />
-              <span className="hidden sm:inline">Send</span>
+              <span className="hidden sm:inline text-sm">Send</span>
             </button>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-xs text-gray-500 dark:text-gray-600 mt-2">
             Press Enter to send, Shift+Enter for new line
           </p>
         </div>
